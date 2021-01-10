@@ -49,9 +49,13 @@ class Application {
         return $this->user->registration($login, $password, $nickname);
     }
 
-    public function getAllId() {
-        return $this->user->getAllId();
+    public function setUserAvater($params) {
+        if ($params['avatar'] && $params['token']) {
+            return $this->user->setUserAvater($params['avatar'], $params['token']);
+        }
+        return ['error'];
     }
+
 
 }
 

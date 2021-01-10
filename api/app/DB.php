@@ -45,9 +45,43 @@ class DB {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getAllId() {
-        $stmt = $this->db->prepare("SELECT `id` FROM `users`");
+    public function setUserAvater($images, $token) {
+        // $img = $images['name'];
+        // $stmt = $this->db->prepare("UPDATE `users` SET `avatar` = $img WHERE `token` = $token");
+        // $stmt->execute();
+        // return $images;
+
+        // $fileName = $images['name'];
+        // $fileTmpName = $images['tmp_name'];
+        // $fileSize = $images['size'];
+        // $fileError = $images['error'];
+        // $fileType = $images['type'];
+
+        // $fileExt = explode('.', $fileName);
+        // $fileActualExt = strtolower(end($fileExt));
+
+        // $allowed = array('jpg', 'jpeg', 'png', 'pdf');
+
+        // if (in_array($fileActualExt, $allowed)) {
+        //     if ($fileError === 0) {
+        //         if ($fileSize < 1000000) {
+        //             $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+        //             $fileDestination = 'uploads/' . $fileNameNew;
+        //             move_uploaded_file($fileTmpName, $fileDestination);
+        //             header("Location: index.php");
+        //         } else {
+        //             echo "Your file is too big";
+        //         }
+        //     } else {
+        //         echo "There was an error uploading your file";
+        //     }
+        // } else {
+        //     echo "You cannot upload files of this type";
+        // }
+
+        $file = addslashes(file_get_contents($images['tmp_name']));
+        $stmt = $this->db->prepare("UPDATE `users` SET `avatar` = $file WHERE `token` = $token");
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return true;
     }
 }

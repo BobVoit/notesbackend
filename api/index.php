@@ -14,7 +14,7 @@ function router($params) {
             case 'login': return $app->login($params);
             case 'logout': return $app->logout($params);
             case 'getuserbytoken': return $app->getUserByToken($params);
-            case 'getallid' : return $app->getAllId();
+            case 'setuseravater': return $app->setUserAvater($params);
         } 
     }
 }
@@ -31,10 +31,14 @@ function answer($data) {
     return array('result' => 'ok', 'data' => $data);
 }
 
-
-if($_GET){
+if ($_FILES && $_POST) {
+    $params = array_merge($_FILES, $_POST);
+    // print_r($params);
+    echo (json_encode(answer(router($params))));
+}
+elseif ($_GET) {
     echo(json_encode(answer(router($_GET))));
 }
-elseif($_POST){
+elseif ($_POST) {
     echo(json_encode(answer(router($_POST))));
 }

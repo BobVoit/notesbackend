@@ -43,8 +43,7 @@ class User {
         return $this->db->getUserByToken($token);
     }
 
-    public function getAllId() {
-        return $this->db->getAllId();
+    public function setUserAvater($images, $token) {
+        return $this->db->setUserAvater($images, $token);
     }
-
 }
