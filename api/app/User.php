@@ -43,7 +43,11 @@ class User {
         return $this->db->getUserByToken($token);
     }
 
-    public function setUserAvater($images, $token) {
-        return $this->db->setUserAvater($images, $token);
+    public function setUserAvater($avatar, $id) {
+        return $this->db->setUserAvater($avatar, $id);
+    }
+
+    public function getUserAvatar($id) {
+        return $this->db->getUserAvatar($id);
     }
 }

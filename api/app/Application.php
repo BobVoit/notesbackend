@@ -50,12 +50,17 @@ class Application {
     }
 
     public function setUserAvater($params) {
-        if ($params['avatar'] && $params['token']) {
-            return $this->user->setUserAvater($params['avatar'], $params['token']);
+        if ($params['avatar'] && $params['id']) {
+            return $this->user->setUserAvater($params['avatar'], $params['id']);
         }
         return ['error'];
     }
 
+    public function getUserAvatar($params) {
+        if ($params['id']) {
+            return $this->user->getUserAvatar($params['id']);
+        }
+    }
 
 }
 

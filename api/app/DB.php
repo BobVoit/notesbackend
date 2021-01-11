@@ -45,43 +45,45 @@ class DB {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function setUserAvater($images, $token) {
-        // $img = $images['name'];
-        // $stmt = $this->db->prepare("UPDATE `users` SET `avatar` = $img WHERE `token` = $token");
-        // $stmt->execute();
-        // return $images;
+    public function setUserAvater($avatar, $id) {
+        $fileName = $avatar['name'];
+        $fileTemp = $avatar['tmp_name'];
+        $fileSize = $avatar['size'];
+        $fileType = $avatar['type'];
 
-        // $fileName = $images['name'];
-        // $fileTmpName = $images['tmp_name'];
-        // $fileSize = $images['size'];
-        // $fileError = $images['error'];
-        // $fileType = $images['type'];
+        $path = "upload/".$fileName;
 
-        // $fileExt = explode('.', $fileName);
-        // $fileActualExt = strtolower(end($fileExt));
+        if (empty($fileName)) {
+            return ['error'];
+        } else if ($fileType == "image/jpg" || $fileType == "image/jpeg" || $fileType == "image/png" || $fileType == "image/gif") {
+            if (!file_exists($path)) {
+                if ($fileSize < 5000000) {
+                    // move_uploaded_file($fileTemp, "upload/" . $fileName);
+                } else {
+                    return ['error'];
+                }
+            } else {
+                return ['error'];
+            }
+        } else {
+            return ['error'];
+        }
+        
+        $stmt = $this->db->prepare('INSERT INTO `avatars`(`userId`, `name`, `image`) VALUES (:userId , :fname, :fimage)');
+        $stmt->bindParam(':userId', $id);
+        $stmt->bindParam(':fname', explode("." ,$fileName)[0]);
+        $stmt->bindParam(':fimage', $fileName);
 
-        // $allowed = array('jpg', 'jpeg', 'png', 'pdf');
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return ['error'];;
+        }
+    }
 
-        // if (in_array($fileActualExt, $allowed)) {
-        //     if ($fileError === 0) {
-        //         if ($fileSize < 1000000) {
-        //             $fileNameNew = uniqid('', true) . "." . $fileActualExt;
-        //             $fileDestination = 'uploads/' . $fileNameNew;
-        //             move_uploaded_file($fileTmpName, $fileDestination);
-        //             header("Location: index.php");
-        //         } else {
-        //             echo "Your file is too big";
-        //         }
-        //     } else {
-        //         echo "There was an error uploading your file";
-        //     }
-        // } else {
-        //     echo "You cannot upload files of this type";
-        // }
-
-        $file = addslashes(file_get_contents($images['tmp_name']));
-        $stmt = $this->db->prepare("UPDATE `users` SET `avatar` = $file WHERE `token` = $token");
+    public function getUserAvatar($id) {
+        $stmt = $this->db->prepare("SELECT * FROM `avatars` WHERE userId = '$id'");
         $stmt->execute();
-        return true;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

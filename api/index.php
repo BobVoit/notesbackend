@@ -15,6 +15,7 @@ function router($params) {
             case 'logout': return $app->logout($params);
             case 'getuserbytoken': return $app->getUserByToken($params);
             case 'setuseravater': return $app->setUserAvater($params);
+            case 'getuseravatar': return $app->getUserAvatar($params);
         } 
     }
 }
@@ -33,7 +34,6 @@ function answer($data) {
 
 if ($_FILES && $_POST) {
     $params = array_merge($_FILES, $_POST);
-    // print_r($params);
     echo (json_encode(answer(router($params))));
 }
 elseif ($_GET) {
