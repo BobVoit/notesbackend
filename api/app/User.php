@@ -50,4 +50,16 @@ class User {
     public function getUserAvatar($id) {
         return $this->db->getUserAvatar($id);
     }
+
+    public function addNotes($id, $title, $message) {
+        return $this->db->addNotes($id, $title, $message);
+    }
+
+    public function getAllNotes($id) {
+        return $this->db->getAllNotes($id);
+    }
+
+    public function deleteNote($noteId) {
+        return $this->db->deleteNote($noteId);
+    }
 }

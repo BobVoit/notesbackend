@@ -62,6 +62,24 @@ class Application {
         }
     }
 
+    public function addNotes($params) {
+        if ($params['id'] && $params['title'] && $params['message']) {
+            return $this->user->addNotes($params['id'], $params['title'], $params['message']);
+        }
+    }
+
+    public function getAllNotes($params) {
+        if ($params['id']) {
+            return $this->user->getAllNotes($params['id']);
+        }
+    }
+
+    public function deleteNote($params) {
+        if ($params['note_id']) {
+            return $this->user->deleteNote($params['note_id']);
+        }
+    }
+
 }
 
 

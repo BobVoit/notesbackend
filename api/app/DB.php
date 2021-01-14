@@ -22,7 +22,7 @@ class DB {
     public function updateToken($id, $token) {
         $stmt = $this->db->prepare("UPDATE users SET token = '$token' WHERE id = '$id'");
         $stmt->execute();
-        return true;
+        return $stmt->execute();
     }
 
     public function registrationUser($login, $password, $token, $nickname) {
@@ -30,7 +30,7 @@ class DB {
             VALUES ('$login', '$password', '$token', '$nickname')");
         $stmt->execute();
         $stmt->fetch();
-        return true;
+        return $stmt->fetch();
     }
 
     public function getUserByLogin($login) {
@@ -54,19 +54,19 @@ class DB {
         $path = "upload/".$fileName;
 
         if (empty($fileName)) {
-            return ['error'];
+            return false;;
         } else if ($fileType == "image/jpg" || $fileType == "image/jpeg" || $fileType == "image/png" || $fileType == "image/gif") {
             if (!file_exists($path)) {
                 if ($fileSize < 5000000) {
-                    // move_uploaded_file($fileTemp, "upload/" . $fileName);
+                    move_uploaded_file($fileTemp, "upload/" . $fileName);
                 } else {
-                    return ['error'];
+                    return false;
                 }
             } else {
-                return ['error'];
+                return false;;
             }
         } else {
-            return ['error'];
+            return false;;
         }
         
         $stmt = $this->db->prepare('INSERT INTO `avatars`(`userId`, `name`, `image`) VALUES (:userId , :fname, :fimage)');
@@ -74,11 +74,7 @@ class DB {
         $stmt->bindParam(':fname', explode("." ,$fileName)[0]);
         $stmt->bindParam(':fimage', $fileName);
 
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return ['error'];;
-        }
+        return $stmt->execute();
     }
 
     public function getUserAvatar($id) {
@@ -86,4 +82,22 @@ class DB {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function addNotes($id, $title, $message) {
+        $stmt = $this->db
+            ->prepare("INSERT INTO `notes` (`title`, `message`, `messageDate`, `userId`) VALUES ('$title', '$message', NOW(), '$id')");
+        return $stmt->execute();
+    }
+
+    public function getAllNotes($id) {
+        $stmt = $this->db->prepare("SELECT * FROM `notes` WHERE userId='$id'");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteNote($noteId) {
+        $stmt = $this->db->prepare("DELETE FROM `notes` WHERE id='$noteId'");
+        return $stmt->execute();
+    }
+    
 }
