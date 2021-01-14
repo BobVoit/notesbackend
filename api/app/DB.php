@@ -29,7 +29,6 @@ class DB {
         $stmt =  $this->db->prepare("INSERT INTO `users` (`login`, `password`, `token`, `nickname`) 
             VALUES ('$login', '$password', '$token', '$nickname')");
         $stmt->execute();
-        $stmt->fetch();
         return $stmt->fetch();
     }
 
@@ -83,10 +82,16 @@ class DB {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function addNotes($id, $title, $message) {
-        $stmt = $this->db
-            ->prepare("INSERT INTO `notes` (`title`, `message`, `messageDate`, `userId`) VALUES ('$title', '$message', NOW(), '$id')");
-        return $stmt->execute();
+    public function addNote($id, $title, $message) {
+        $messageDate = date('Y-m-j H:i:s');
+        $stmt = $this->db->prepare("INSERT INTO `notes` (`title`, `message`, `messageDate`, `userId`) 
+            VALUES ('$title', '$message', '$messageDate', '$id')");
+        if ($stmt->execute()) {
+            $stmt = $this->db->prepare("SELECT * FROM `notes` WHERE `messageDate`='$messageDate'");
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return false;
     }
 
     public function getAllNotes($id) {

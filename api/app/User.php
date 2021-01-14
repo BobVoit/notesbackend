@@ -51,8 +51,8 @@ class User {
         return $this->db->getUserAvatar($id);
     }
 
-    public function addNotes($id, $title, $message) {
-        return $this->db->addNotes($id, $title, $message);
+    public function addNote($id, $title, $message) {
+        return $this->db->addNote($id, $title, $message);
     }
 
     public function getAllNotes($id) {

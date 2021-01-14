@@ -62,9 +62,9 @@ class Application {
         }
     }
 
-    public function addNotes($params) {
+    public function addNote($params) {
         if ($params['id'] && $params['title'] && $params['message']) {
-            return $this->user->addNotes($params['id'], $params['title'], $params['message']);
+            return $this->user->addNote($params['id'], $params['title'], $params['message']);
         }
     }
 

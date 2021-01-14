@@ -16,7 +16,7 @@ function router($params) {
             case 'getuserbytoken': return $app->getUserByToken($params);
             case 'setuseravater': return $app->setUserAvater($params);
             case 'getuseravatar': return $app->getUserAvatar($params);
-            case 'addnote': return $app->addNotes($params);
+            case 'addnote': return $app->addNote($params);
             case 'getallnotes': return $app->getAllNotes($params);
             case 'deletenote': return $app->deleteNote($params);
         } 
