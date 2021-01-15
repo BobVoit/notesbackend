@@ -95,7 +95,7 @@ class DB {
     }
 
     public function getAllNotes($id) {
-        $stmt = $this->db->prepare("SELECT * FROM `notes` WHERE userId='$id'");
+        $stmt = $this->db->prepare("SELECT * FROM `notes` WHERE userId='$id' ORDER BY `messageDate`");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
