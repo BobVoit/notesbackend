@@ -45,41 +45,47 @@ class DB {
     }
 
     public function setUserAvater($avatar, $id) {
-        $fileName = $avatar['name'];
-        $fileTemp = $avatar['tmp_name'];
-        $fileSize = $avatar['size'];
-        $fileType = $avatar['type'];
-
-        $path = "upload/".$fileName;
-
-        if (empty($fileName)) {
-            return false;;
-        } else if ($fileType == "image/jpg" || $fileType == "image/jpeg" || $fileType == "image/png" || $fileType == "image/gif") {
-            if (!file_exists($path)) {
-                if ($fileSize < 5000000) {
-                    move_uploaded_file($fileTemp, "upload/" . $fileName);
+        // $stmt = $this->db->prepare("INSERT INTO `avatars` (`userId`, `image`) VALUES ('$id', '$avatar')");
+        // $stmt->execute();
+        // return true;
+        $targetDir = "uploads/";
+        $fileName = basename($avatar["name"]);
+        $targetFilePath = $targetDir . $fileName;
+        $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+        if (!empty($avatar["name"])) {
+            $allowTypes = array('jpg','png','jpeg','gif','pdf');
+            if (in_array($fileType, $allowTypes)) {
+                if (move_uploaded_file($avatar["tmp_name"], $targetFilePath)) {
+                    $stmt = $this->db->prepare("INSERT INTO `avatars` (`userId`, `image`) VALUES ('$id', '".$fileName."')");
+                    if ($stmt->execute()) {
+                        return true;
+                    } else {
+                        return "File upload failed, please try again.";
+                    }
                 } else {
-                    return false;
+                    return "Sorry, there was an error uploading your file.";
                 }
             } else {
-                return false;;
+                return "Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.";
             }
         } else {
-            return false;;
+            return "Please select a file to upload."; 
         }
-        
-        $stmt = $this->db->prepare('INSERT INTO `avatars`(`userId`, `name`, `image`) VALUES (:userId , :fname, :fimage)');
-        $stmt->bindParam(':userId', $id);
-        $stmt->bindParam(':fname', explode("." ,$fileName)[0]);
-        $stmt->bindParam(':fimage', $fileName);
-
-        return $stmt->execute();
     }
 
     public function getUserAvatar($id) {
-        $stmt = $this->db->prepare("SELECT * FROM `avatars` WHERE userId = '$id'");
+        $stmt = $this->db->prepare("SELECT `image` FROM `avatars` WHERE userId = '$id'");
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $img = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($img) {
+            $imageURL = "uploads/" . $img["image"];
+            if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
+                $http = "https://";   
+            else  
+                $http = "http://";   
+            return $http . $_SERVER['HTTP_HOST'] . "/api/" . $imageURL;
+        } 
+        return false;
     }
 
     public function addNote($id, $title, $message) {

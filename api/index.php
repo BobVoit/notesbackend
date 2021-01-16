@@ -1,5 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin: *');
+
 error_reporting(E_ALL & ~E_NOTICE);
 
 require_once('app/Application.php');
@@ -36,12 +37,11 @@ function answer($data) {
 }
 
 if ($_FILES && $_POST) {
-    $params = array_merge($_FILES, $_POST);
-    echo (json_encode(answer(router($params))));
+    echo (json_encode(answer(router(array_merge($_FILES, $_POST)))));
 }
 elseif ($_GET) {
-    echo(json_encode(answer(router($_GET))));
+    echo (json_encode(answer(router($_GET))));
 }
 elseif ($_POST) {
-    echo(json_encode(answer(router($_POST))));
+    echo (json_encode(answer(router($_POST))));
 }
