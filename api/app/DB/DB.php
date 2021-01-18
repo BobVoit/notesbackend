@@ -115,5 +115,11 @@ class DB {
         $stmt = $this->db->prepare("UPDATE `users` SET `nickname`='$newNickname' WHERE `id`='$id'");
         return $stmt->execute();
     }
+
+    public function getNickname($id) {
+        $stmt = $this->db->prepare("SELECT `nickname` FROM `users` WHERE `id`='$id'");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     
 }

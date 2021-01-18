@@ -66,4 +66,8 @@ class User {
     public function updateNickname($id, $newNickname) {
         return $this->db->updateNickname($id, $newNickname);
     }
+
+    public function getNickname($id) {
+        return $this->db->getNickname($id);
+    }
 }

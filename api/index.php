@@ -21,6 +21,7 @@ function router($params) {
             case 'getallnotes': return $app->getAllNotes($params);
             case 'deletenote': return $app->deleteNote($params);
             case 'updatenickname': return $app->updateNickname($params);
+            case 'getnickname': return $app->getNickname($params);
         } 
     }
 }

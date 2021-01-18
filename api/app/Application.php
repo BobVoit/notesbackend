@@ -91,6 +91,12 @@ class Application {
         return ['error'];
     }
 
+    public function getNickname($params) {
+        if ($params['id']) {
+            return $this->user->getNickname($params['id']);
+        }
+    }
+
 }
 
 
