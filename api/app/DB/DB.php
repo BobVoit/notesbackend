@@ -110,5 +110,10 @@ class DB {
         $stmt = $this->db->prepare("DELETE FROM `notes` WHERE id='$noteId'");
         return $stmt->execute();
     }
+
+    public function updateNickname($id, $newNickname) {
+        $stmt = $this->db->prepare("UPDATE `users` SET `nickname`='$newNickname' WHERE `id`='$id'");
+        return $stmt->execute();
+    }
     
 }

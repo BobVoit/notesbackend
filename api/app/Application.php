@@ -1,7 +1,7 @@
 <?php
 
-require_once('DB.php');
-require_once('User.php');
+require_once('DB/DB.php');
+require_once('User/User.php');
 
 
 class Application {
@@ -60,24 +60,35 @@ class Application {
         if ($params['id']) {
             return $this->user->getUserAvatar($params['id']);
         }
+        return ['error'];
     }
 
     public function addNote($params) {
         if ($params['id'] && $params['title'] && $params['message']) {
             return $this->user->addNote($params['id'], $params['title'], $params['message']);
         }
+        return ['error'];
     }
 
     public function getAllNotes($params) {
         if ($params['id']) {
             return $this->user->getAllNotes($params['id']);
         }
+        return ['error'];
     }
 
     public function deleteNote($params) {
         if ($params['note_id']) {
             return $this->user->deleteNote($params['note_id']);
         }
+        return ['error'];
+    }
+
+    public function updateNickname($params) {
+        if ($params['id'] && $params['new_nickname']) {
+            return $this->user->updateNickname($params['id'], $params['new_nickname']);
+        }
+        return ['error'];
     }
 
 }

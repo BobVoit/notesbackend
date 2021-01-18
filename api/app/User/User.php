@@ -62,4 +62,8 @@ class User {
     public function deleteNote($noteId) {
         return $this->db->deleteNote($noteId);
     }
+
+    public function updateNickname($id, $newNickname) {
+        return $this->db->updateNickname($id, $newNickname);
+    }
 }
