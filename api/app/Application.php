@@ -97,6 +97,12 @@ class Application {
         }
     }
 
+    public function updateAvatar($params) {
+        if ($params['id'] && $params['new_avatar']) {
+            return $this->user->updateAvatar($params['id'], $params['new_avatar']);
+        }
+    }
+
 }
 
 

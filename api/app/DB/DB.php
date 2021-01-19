@@ -18,6 +18,22 @@ class DB {
         $this->db = null;
     }
 
+    // PRIVATE
+
+    private function getAvatarName($id) {
+        $stmt = $this->db->prepare("SELECT `image` FROM `avatars` WHERE `userId`='$id'");
+        $stmt->execute();
+        return ($stmt->fetch(PDO::FETCH_ASSOC))['image'];
+    }
+
+    private function deleteAvatar($id) {
+        $avatarName = $this->getAvatarName($id);
+        unlink("uploads/" . $avatarName);
+        $stmt = $this->db->prepare("DELETE FROM `avatars` WHERE `userId`='$id'");
+        return $stmt->execute();
+    }
+
+    // PUBLIC
 
     public function updateToken($id, $token) {
         $stmt = $this->db->prepare("UPDATE users SET token = '$token' WHERE id = '$id'");
@@ -45,9 +61,6 @@ class DB {
     }
 
     public function setUserAvater($avatar, $id) {
-        // $stmt = $this->db->prepare("INSERT INTO `avatars` (`userId`, `image`) VALUES ('$id', '$avatar')");
-        // $stmt->execute();
-        // return true;
         $targetDir = "uploads/";
         $fileName = basename($avatar["name"]);
         $targetFilePath = $targetDir . $fileName;
@@ -120,6 +133,11 @@ class DB {
         $stmt = $this->db->prepare("SELECT `nickname` FROM `users` WHERE `id`='$id'");
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateAvatar($id, $newAvatar) {
+        $this->deleteAvatar($id);
+        return $this->setUserAvater($newAvatar, $id);
     }
     
 }

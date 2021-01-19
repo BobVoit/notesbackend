@@ -22,6 +22,7 @@ function router($params) {
             case 'deletenote': return $app->deleteNote($params);
             case 'updatenickname': return $app->updateNickname($params);
             case 'getnickname': return $app->getNickname($params);
+            case 'updateavatar': return $app->updateAvatar($params);
         } 
     }
 }

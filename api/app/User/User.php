@@ -70,4 +70,8 @@ class User {
     public function getNickname($id) {
         return $this->db->getNickname($id);
     }
+
+    public function updateAvatar($id, $newAvatar) {
+        return $this->db->updateAvatar($id, $newAvatar);
+    }
 }
