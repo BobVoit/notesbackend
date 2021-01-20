@@ -23,6 +23,7 @@ function router($params) {
             case 'updatenickname': return $app->updateNickname($params);
             case 'getnickname': return $app->getNickname($params);
             case 'updateavatar': return $app->updateAvatar($params);
+            case 'deleteavatar': return $app->deleteAvatar($params);
         } 
     }
 }

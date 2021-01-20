@@ -74,4 +74,8 @@ class User {
     public function updateAvatar($id, $newAvatar) {
         return $this->db->updateAvatar($id, $newAvatar);
     }
+
+    public function deleteAvatar($id) {
+        return $this->db->deleteAvatar($id);
+    }
 }

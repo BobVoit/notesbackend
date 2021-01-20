@@ -26,13 +26,6 @@ class DB {
         return ($stmt->fetch(PDO::FETCH_ASSOC))['image'];
     }
 
-    private function deleteAvatar($id) {
-        $avatarName = $this->getAvatarName($id);
-        unlink("uploads/" . $avatarName);
-        $stmt = $this->db->prepare("DELETE FROM `avatars` WHERE `userId`='$id'");
-        return $stmt->execute();
-    }
-
     // PUBLIC
 
     public function updateToken($id, $token) {
@@ -99,6 +92,13 @@ class DB {
             return $http . $_SERVER['HTTP_HOST'] . "/api/" . $imageURL;
         } 
         return false;
+    }
+
+    public function deleteAvatar($id) {
+        $avatarName = $this->getAvatarName($id);
+        unlink("uploads/" . $avatarName);
+        $stmt = $this->db->prepare("DELETE FROM `avatars` WHERE `userId`='$id'");
+        return $stmt->execute();
     }
 
     public function addNote($id, $title, $message) {

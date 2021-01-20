@@ -103,6 +103,12 @@ class Application {
         }
     }
 
+    public function deleteAvatar($params) {
+        if ($params['id']) {
+            return $this->user->deleteAvatar($params['id']);
+        }
+    }
+
 }
 
 
